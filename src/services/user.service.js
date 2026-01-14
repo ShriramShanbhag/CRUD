@@ -1,9 +1,11 @@
 import userRepo from "../repositories/user.repository.js"
 import AppError from "../errors/AppError.js";
-import { assertOwnershipOrAdmin, assertOwnership, assertAdmin, assertCanAccessUser } from "../utils/authorization.js";
+import { assertResourceAccess } from "../utils/authorization.js";
 import { toUserResponse } from "../serializers/user.serializer.js";
 const UserSerivice = {
-    createUser: async ({name, email}) => {
+    createUser: async ({actor, body}) => {
+        assertResourceAccess(actor)
+        const {name, email} = body;
         if(!name || !email) {
             throw new Error("Name and email are required");
         }
@@ -14,7 +16,7 @@ const UserSerivice = {
         return userRepo.create({name, email});
     },
     getAllUsers: async (actor) => {
-        assertAdmin(actor);
+        assertResourceAccess(actor);
         const users = await userRepo.findAll();
         if(!users) {
             throw new AppError("No users found", 404);
@@ -30,7 +32,7 @@ const UserSerivice = {
         return toUserResponse(user);
     },
     getMe: async({actor}) => {
-        console.log(actor)
+        assertResourceAccess(actor, actor.id)
         const user = await userRepo.findById(actor.id);
         if(!user) {
             throw new AppError("Something went wrong");
@@ -38,7 +40,7 @@ const UserSerivice = {
         return toUserResponse(user);
     },
     updateUser: async ({resourceId, actor, body}) => {
-        assertCanAccessUser(actor, resourceId)
+        assertResourceAccess(actor, resourceId)
         const user = await userRepo.findById(resourceId);
         if(!user) {
             throw new AppError("User not found", 404);
@@ -52,7 +54,7 @@ const UserSerivice = {
         return userRepo.update(id, {name: body.name, email: body.email});
     },
     deleteUser: async ({actor, resourceId}) => {
-        assertCanAccessUser(actor, resourceId)
+        assertResourceAccess(actor, resourceId)
         const user = await userRepo.findById(resourceId);
         if(!user) {
             throw new AppError("User not found", 404);

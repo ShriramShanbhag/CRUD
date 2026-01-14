@@ -1,7 +1,7 @@
 import userSerivice from "../services/user.service.js";
 export const createUser = async(req, res, next) => {
     try {
-        const user = await userSerivice.createUser(req.body);
+        const user = await userSerivice.createUser({actor: req.user, body: req.body});
         if(user) {
             res.status(201).json(user);
         }
