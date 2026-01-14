@@ -2,6 +2,8 @@ import userRepo from "../repositories/user.repository.js"
 import AppError from "../errors/AppError.js";
 import { assertResourceAccess } from "../utils/authorization.js";
 import { toUserResponse } from "../serializers/user.serializer.js";
+import { PERMISSIONS } from "../config/permissions.js";
+
 const UserSerivice = {
     createUser: async ({actor, body}) => {
         if(actor.role !== 'admin') throw new AppError("Forbidden", 403);
@@ -16,7 +18,7 @@ const UserSerivice = {
         return userRepo.create({name, email});
     },
     getAllUsers: async (actor) => {
-        assertResourceAccess(actor);
+        if(actor.role !== 'admin') throw new AppError("Forbidden", 403);
         const users = await userRepo.findAll();
         if(!users) {
             throw new AppError("No users found", 404);
@@ -24,7 +26,7 @@ const UserSerivice = {
         return users.map((u) => toUserResponse(u));
     },  
     getUserById: async ({resourceId, actor}) => {
-        assertResourceAccess(actor, resourceId);
+        assertResourceAccess(actor, resourceId, PERMISSIONS.USER_READ);
         const user = await userRepo.findById(resourceId);
         if(!user) {
             throw new AppError("User not found", 404);
@@ -32,7 +34,7 @@ const UserSerivice = {
         return toUserResponse(user);
     },
     getMe: async({actor}) => {
-        assertResourceAccess(actor, actor.id)
+        assertResourceAccess(actor, actor.id, PERMISSIONS.USER_READ)
         const user = await userRepo.findById(actor.id);
         if(!user) {
             throw new AppError("Something went wrong");
@@ -41,7 +43,7 @@ const UserSerivice = {
     },
     updateUser: async ({resourceId, actor, body}) => {
         assertResourceAccess(actor, resourceId)
-        const user = await userRepo.findById(resourceId);
+        const user = await userRepo.findById(resourceId, PERMISSIONS.USER_UPDATE);
         if(!user) {
             throw new AppError("User not found", 404);
         }
@@ -54,7 +56,7 @@ const UserSerivice = {
         return userRepo.update(id, {name: body.name, email: body.email});
     },
     deleteUser: async ({actor, resourceId}) => {
-        assertResourceAccess(actor, resourceId)
+        assertResourceAccess(actor, resourceId, PERMISSIONS.USER_DELETE)
         const user = await userRepo.findById(resourceId);
         if(!user) {
             throw new AppError("User not found", 404);

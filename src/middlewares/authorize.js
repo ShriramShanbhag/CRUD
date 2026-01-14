@@ -1,5 +1,5 @@
-import AppError from "../errors/AppError";
-import { ROLE_PERMISSIONS } from "../config/permissions";
+import AppError from "../errors/AppError.js";
+import { ROLE_PERMISSIONS } from "../config/permissions.js";
 
 export const requirePermission = (requiredPermission) => {
     return (req, res, next) => {
