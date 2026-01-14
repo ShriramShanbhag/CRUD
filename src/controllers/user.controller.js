@@ -13,7 +13,7 @@ export const getUserById = async(req, res, next) => {
     try {
         const user = await userSerivice.getUserById({
             resourceId: req.params.id, 
-            actorId: req.user.id
+            actor: req.user
         });
         if(!user) return res.status(404).send("User does not exist");
         res.json(user)

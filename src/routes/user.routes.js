@@ -13,7 +13,7 @@ import { PERMISSIONS } from "../config/permissions.js";
 
 const router = express.Router();
 
-router.post('', createUser);
+router.post('', requireAuth, requirePermission(PERMISSIONS.USER_CREATE), createUser);
 router.get('', requireAuth, requirePermission(PERMISSIONS.USER_READALL), getAllUsers);
 router.get('/me', requireAuth, requirePermission(PERMISSIONS.USER_READ), getMe);
 router.get('/:id', requireAuth, requirePermission(PERMISSIONS.USER_READ), getUserById);

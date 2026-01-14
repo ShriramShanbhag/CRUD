@@ -4,7 +4,7 @@ import { assertResourceAccess } from "../utils/authorization.js";
 import { toUserResponse } from "../serializers/user.serializer.js";
 const UserSerivice = {
     createUser: async ({actor, body}) => {
-        assertResourceAccess(actor)
+        if(actor.role !== 'admin') throw new AppError("Forbidden", 403);
         const {name, email} = body;
         if(!name || !email) {
             throw new Error("Name and email are required");
@@ -23,8 +23,8 @@ const UserSerivice = {
         }
         return users.map((u) => toUserResponse(u));
     },  
-    getUserById: async ({resourceId, actorId, actorRole}) => {
-        assertOwnershipOrAdmin(actorId, resourceId);
+    getUserById: async ({resourceId, actor}) => {
+        assertResourceAccess(actor, resourceId);
         const user = await userRepo.findById(resourceId);
         if(!user) {
             throw new AppError("User not found", 404);
