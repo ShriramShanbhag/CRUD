@@ -13,10 +13,6 @@ const ChatService = {
     getMyChats: async ({actor}) => {
         return await chatRepo.findAllByUserId(actor.id);
     },
-    getAllChatsByUser: async ({actor, user_id}) => {
-        assertResourceAccess(actor, user_id, PERMISSIONS.CHAT_READALL);
-        return await chatRepo.findAllByUserId(user_id);
-    },
     createChat: async ({actor, body}) => {
         if (!body.title || !body.url || !body.platform) {
             throw new AppError("Title, URL, and Platform are required", 400);
