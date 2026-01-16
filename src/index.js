@@ -4,6 +4,7 @@ import cors from 'cors';
 import { errorHandler } from './middlewares/errorHandler.js';
 import userRoutes from './routes/user.routes.js';
 import authRoutes from './routes/auth.routes.js';
+import chatRoutes from './routes/chat.routes.js';
 
 const app = express();
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(cors())
 // Routes
 app.use('/api/user', userRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/chat', chatRoutes)
 // Error Handling Middleware
 
 app.get('/',  async (req, res) => {
