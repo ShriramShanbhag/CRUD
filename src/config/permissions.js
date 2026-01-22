@@ -8,7 +8,11 @@ export const PERMISSIONS = {
     CHAT_UPDATE: 'chat:update',
     CHAT_READ: 'chat:read',
     CHAT_DELETE: 'chat:delete',
-    CHAT_READALL: 'chat:read_all'
+    CHAT_READALL: 'chat:read_all',
+    TAG_READ: 'tag:read',
+    TAG_CREATE: 'tag:create',
+    TAG_UPDATE: 'tag:update',
+    TAG_DELETE: 'tag:delete'
 }
 
 // Permissions matrix
@@ -25,6 +29,11 @@ export const ROLE_PERMISSIONS = {
         PERMISSIONS.CHAT_READALL,
         PERMISSIONS.CHAT_UPDATE,
         PERMISSIONS.CHAT_DELETE,
+
+        PERMISSIONS.TAG_CREATE,
+        PERMISSIONS.TAG_READ,
+        PERMISSIONS.TAG_UPDATE,
+        PERMISSIONS.TAG_DELETE
     ],
     user: [
         PERMISSIONS.USER_DELETE,
@@ -36,5 +45,7 @@ export const ROLE_PERMISSIONS = {
         PERMISSIONS.CHAT_READALL,
         PERMISSIONS.CHAT_UPDATE,
         PERMISSIONS.CHAT_DELETE,
+
+        PERMISSIONS.TAG_READ
     ]
 }
