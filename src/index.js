@@ -5,6 +5,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import userRoutes from './routes/user.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import chatRoutes from './routes/chat.routes.js';
+import tagRoutes from './routes/tag.routes.js'
 
 const app = express();
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(cors())
 app.use('/api/user', userRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/chat', chatRoutes)
+app.use('/api/tag', tagRoutes)
 // Error Handling Middleware
 
 app.get('/',  async (req, res) => {

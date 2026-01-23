@@ -1,6 +1,6 @@
 import tagService from "../services/tag.service.js";
 
-export const createTag = async ({req, res, next}) => {
+export const createTag = async (req, res, next) => {
     try {
         const tag = await tagService.createTag({
             actor: req.user,
@@ -12,7 +12,7 @@ export const createTag = async ({req, res, next}) => {
     }
 }
 
-export const getAllTags = async ({req, res, next}) => {
+export const getAllTags = async (req, res, next) => {
     try {
         const tags = await tagService.getAllTags()
         res.status(200).json(tags);
@@ -21,7 +21,7 @@ export const getAllTags = async ({req, res, next}) => {
     }
 }
 
-export const deleteTag = async ({req, res, next}) => {
+export const deleteTag = async (req, res, next) => {
     try {
         const deleted = await tagService.deleteTag({
             actor: req.user,
@@ -34,7 +34,7 @@ export const deleteTag = async ({req, res, next}) => {
     }
 }
 
-export const updateTag = async ({req, res, next}) => {
+export const updateTag = async (req, res, next) => {
     try {
         const tag = await tagService.updateTag({
             actor: req.user,
@@ -48,7 +48,7 @@ export const updateTag = async ({req, res, next}) => {
     }
 }
 
-export const addTagToChat = async ({req, res, next}) => {
+export const addTagToChat = async (req, res, next) => {
     try {
         const { chatId, tagId, tagName } = req.body
         const tag = await tagService.attachTagToChat({
@@ -64,7 +64,7 @@ export const addTagToChat = async ({req, res, next}) => {
     }
 }
 
-export const detachTagFromChat = async ({req, res, next}) => {
+export const detachTagFromChat = async (req, res, next) => {
     try {
         const { chatId } = req.body;
         const detached = await tagService.detachTagFromChat({
