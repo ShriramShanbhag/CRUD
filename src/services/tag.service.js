@@ -44,9 +44,11 @@ const TagService = {
             tag = await tagRepo.findById(tagId);
         } else if(tagName) {
             tag = await tagRepo.findByName({name: tagName});
+            if(!tag) {
+                tag = await tagRepo.create({name: tagName});
+            }
         }
         if(!tag) throw new AppError('Tag not found', 404);
-
         return await tagRepo.attachToChat({chatId, tagId: tag.id});
     },
     detachTagFromChat: async ({actor, chatId, tagId}) => {
