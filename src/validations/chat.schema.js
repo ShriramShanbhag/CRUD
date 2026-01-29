@@ -6,7 +6,7 @@ export const createChatSchema = z.object({
     title: z.string().max(100).nonempty().trim(),
     url: z.url().nonempty().trim(),
     user_id: z.int().nonnegative(),
-    platform: z.string().enum(PLATFORMS)
+    platform: z.enum(PLATFORMS)
 })
 
 export const addTagToChatSchema = z.object({
