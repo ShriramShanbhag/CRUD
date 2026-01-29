@@ -50,10 +50,10 @@ export const updateTag = async (req, res, next) => {
 
 export const addTagToChat = async (req, res, next) => {
     try {
-        const { chatId, tagId, tagName } = req.body
+        const { tagId, tagName } = req.body
         const tag = await tagService.attachTagToChat({
             actor: req.user,
-            chatId,
+            chatId: req.params.id,
             tagId,
             tagName
         })
@@ -66,14 +66,14 @@ export const addTagToChat = async (req, res, next) => {
 
 export const detachTagFromChat = async (req, res, next) => {
     try {
-        const { chatId } = req.body;
+        const chatId = req.params.id;
         const detached = await tagService.detachTagFromChat({
             actor: req.user,
             chatId,
             tagId: req.params.tagId
         })
-        if(detached) return res.json(200).send();
-        res.json(500).send("Failed to remove tag")
+        if(detached) return res.status(200).send();
+        res.status(500).send("Failed to remove tag")
     } catch (error) {
         next(error);
     }
