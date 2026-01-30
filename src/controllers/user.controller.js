@@ -23,7 +23,7 @@ export const getUserById = async(req, res, next) => {
 }
 export const getAllUsers = async(req, res, next) => {
     try {
-        const users = await userSerivice.getAllUsers({actor: req.user})
+        const users = await userSerivice.getAllUsers(req.user);
         return res.json(users);
     } catch (error) {
         next(error);
